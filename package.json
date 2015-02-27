@@ -2,7 +2,7 @@
   "name": "TreeSize",
   "version": "0.1.0",
   "description": "Enumerate a directory tree and size info",
-  "main": "dirtree.js",
+  "bin": "./TreeSize.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },

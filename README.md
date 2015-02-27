@@ -1,8 +1,8 @@
 # treesize
 Node module to enumerate subdirectory sizes
 
-Simply run `node .\treesize.js` from a directory of interest to see the inclusive and exclusive size 
-of it and all its subdirectories.
+Simply run `TreeSize` from a directory of interest to see the inclusive and exclusive size 
+of it and all its subdirectories. (After installing via 'npm install -g ./')
 
 TODO
  - [ ] Add dev dependency on `typescript` package
