@@ -1,0 +1,27 @@
+{
+  "name": "TreeSize",
+  "version": "0.1.0",
+  "description": "Enumerate a directory tree and size info",
+  "main": "dirtree.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/billti/treesize.git"
+  },
+  "keywords": [
+    "directory",
+    "tree",
+    "size"
+  ],
+  "author": "Bill Ticehurst",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/billti/treesize/issues"
+  },
+  "homepage": "https://github.com/billti/treesize",
+  "dependencies": {
+    "findit": "^2.0.0"
+  }
+}
