@@ -2,14 +2,17 @@
 var path = require('path');
 var findit = require('findit');
 var program = require('commander');
-program.version('0.0.1').option('-p, --path <path>', 'The path to the directory').option('-d, --depth <n>', 'The level of subdirectories to show', parseInt).option('-s, --size <n>', 'Limit output to subdirectories over <n>MB', parseInt).parse(process.argv);
+program.version('0.0.1').option('-p, --path <path>', 'The path to the directory').option('-d, --depth <n>', 'The level of subdirectories to show', parseInt).option('-s, --size <n>', 'Limit output to subdirectories over <n>MB', parseInt).option('-f, --fullpath', 'Report the full path to the directories').parse(process.argv);
+var options = program.opts();
 // Get the folder to start from
-var root = process.cwd();
+var root = options.path || process.cwd();
+var minSize = options.size || 0;
 var finder = findit(root);
 var graph = {
     size: 0,
     totalSize: 0,
-    subdirs: {}
+    subdirs: {},
+    fullPath: root
 };
 finder.on('directory', function (fullpath, stat, stop) {
     // Stats for directories do not set size.  Note this does get called for the root dir first.
@@ -43,9 +46,13 @@ finder.on('end', function () {
     }
     writeDir(graph, root);
     function writeDir(dir, name) {
+        if (options.size && dir.totalSize < (options.size * 1000000))
+            return;
+        if (options.depth && currIndent > options.depth)
+            return;
         var totalText = (padding + dir.totalSize).slice(-colWidth);
         var sizeText = (padding + dir.size).slice(-colWidth);
-        var dirText = padding.slice(-(currIndent * indent)) + name;
+        var dirText = padding.slice(-(currIndent * indent)) + (options.fullpath ? dir.fullPath : name);
         console.log(totalText + sizeText + dirText);
         currIndent++;
         for (var subdir in dir.subdirs) {
@@ -67,7 +74,8 @@ function getDirInTree(fullPath) {
             result.subdirs[part] = {
                 size: 0,
                 totalSize: 0,
-                subdirs: {}
+                subdirs: {},
+                fullPath: fullPath
             };
         }
         result = result.subdirs[part];

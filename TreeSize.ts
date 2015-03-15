@@ -12,18 +12,24 @@ program
     .option('-p, --path <path>', 'The path to the directory')
     .option('-d, --depth <n>', 'The level of subdirectories to show', parseInt)
     .option('-s, --size <n>', 'Limit output to subdirectories over <n>MB', parseInt)
+    .option('-f, --fullpath', 'Report the full path to the directories')
     .parse(process.argv);
 
+var options = program.opts();
+
 interface Dir {
+    fullPath: string;
     size: number;
     totalSize: number;
     subdirs: {[index: string]: Dir};
 }
 
 // Get the folder to start from
-var root = process.cwd();
+var root = options.path || process.cwd();
+var minSize = options.size || 0;
+
 var finder = findit(root);
-var graph: Dir = { size: 0, totalSize: 0, subdirs: {}};
+var graph: Dir = { size: 0, totalSize: 0, subdirs: {}, fullPath: root};
 
 finder.on('directory',(fullpath: string, stat: fs.Stats, stop: Function) => {
     // Stats for directories do not set size.  Note this does get called for the root dir first.
@@ -65,9 +71,12 @@ finder.on('end',() => {
     writeDir(graph, root);
 
     function writeDir(dir: Dir, name: string) {
+        if(options.size && dir.totalSize < (options.size * 1000000)) return;
+        if(options.depth && currIndent > options.depth) return;
+
         var totalText = (padding + dir.totalSize).slice(-colWidth);
         var sizeText = (padding + dir.size).slice(-colWidth);
-        var dirText = padding.slice(-(currIndent * indent)) + name;
+        var dirText = padding.slice(-(currIndent * indent)) + (options.fullpath ? dir.fullPath : name);
 
         console.log(totalText + sizeText + dirText);
         currIndent++;
@@ -88,7 +97,7 @@ function getDirInTree(fullPath: string): Dir {
     parts.forEach(part => {
         if (!part) return; // Split an empty string (the root path) results in ['']
         if (!(part in result.subdirs)) {
-            result.subdirs[part] = { size: 0, totalSize: 0, subdirs: {}};
+            result.subdirs[part] = { size: 0, totalSize: 0, subdirs: {}, fullPath: fullPath};
         }
         result = result.subdirs[part];
     });
