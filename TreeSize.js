@@ -1,10 +1,16 @@
-/// <reference path="node.d.ts"/>
+/// <reference path="commander.d.ts"/>
 var path = require('path');
 var findit = require('findit');
+var program = require('commander');
+program.version('0.0.1').option('-p, --path <path>', 'The path to the directory').option('-d, --depth <n>', 'The level of subdirectories to show', parseInt).option('-s, --size <n>', 'Limit output to subdirectories over <n>MB', parseInt).parse(process.argv);
 // Get the folder to start from
 var root = process.cwd();
 var finder = findit(root);
-var graph = { size: 0, totalSize: 0, subdirs: {} };
+var graph = {
+    size: 0,
+    totalSize: 0,
+    subdirs: {}
+};
 finder.on('directory', function (fullpath, stat, stop) {
     // Stats for directories do not set size.  Note this does get called for the root dir first.
     // Ensure it is added, so that even dirs with no files are captured
@@ -58,7 +64,11 @@ function getDirInTree(fullPath) {
         if (!part)
             return; // Split an empty string (the root path) results in ['']
         if (!(part in result.subdirs)) {
-            result.subdirs[part] = { size: 0, totalSize: 0, subdirs: {} };
+            result.subdirs[part] = {
+                size: 0,
+                totalSize: 0,
+                subdirs: {}
+            };
         }
         result = result.subdirs[part];
     });

@@ -22,6 +22,7 @@
   },
   "homepage": "https://github.com/billti/treesize",
   "dependencies": {
-    "findit": "^2.0.0"
+    "findit": "^2.0.0",
+    "commander": "^2.7.1"
   }
 }

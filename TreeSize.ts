@@ -1,14 +1,18 @@
-﻿/// <reference path="node.d.ts"/>
+﻿/// <reference path="commander.d.ts"/>
 
-// TODO: Use Commander to support command-line args.
-// TODO: Allow the target dir to be specified as the first arg.
-// TODO: Add a 'depth' option to only report directories to a certain number of subfolder.
-// TODO: Add a 'filemax' option to also emit a file path/size when it is over a certain size.
-// TODO: Add a 'filemax' option to also emit a file path/size when it is over a certain size.
+// Compile with: tsc --module CommonJS TreeSize.ts
 
 import fs = require('fs');
 import path = require('path');
 import findit = require('findit');
+import program = require('commander');
+
+program
+    .version('0.0.1')
+    .option('-p, --path <path>', 'The path to the directory')
+    .option('-d, --depth <n>', 'The level of subdirectories to show', parseInt)
+    .option('-s, --size <n>', 'Limit output to subdirectories over <n>MB', parseInt)
+    .parse(process.argv);
 
 interface Dir {
     size: number;
