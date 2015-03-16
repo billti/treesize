@@ -1,3 +1,5 @@
+#!/usr/bin/env node
+
 /// <reference path="commander.d.ts"/>
 var path = require('path');
 var findit = require('findit');
