@@ -1,5 +1,5 @@
 {
-  "name": "TreeSize",
+  "name": "treesize",
   "version": "0.1.0",
   "description": "Enumerate a directory tree and size info",
   "bin": "./TreeSize.js",
