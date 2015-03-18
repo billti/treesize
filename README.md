@@ -1,11 +1,13 @@
 # treesize
-Node module to enumerate subdirectory sizes
+Utility to enumerate subdirectory sizes
 
-Simply run `TreeSize` from a directory of interest to see the inclusive and exclusive size 
-of it and all its subdirectories. (After installing via 'npm install -g ./')
+Install via 'npm install -g treesize'
+
+To use, run `treesize` from a directory of interest to see the inclusive and exclusive size 
+of it and all its subdirectories.
 
 ```
-  Usage: TreeSize [options]
+  Usage: treesize [options]
 
   Options:
 
